@@ -2,7 +2,7 @@
   "name": "student-loan-calculator",
   "version": "0.1.0",
   "homepage": "https://WilliamNB.github.io/student-loan-calculator",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
