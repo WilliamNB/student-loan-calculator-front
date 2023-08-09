@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/student-loan-calculator/static/css/main.63c525c9.css",
+    "main.js": "/student-loan-calculator/static/js/main.9509b232.js",
+    "static/js/787.0a35d58f.chunk.js": "/student-loan-calculator/static/js/787.0a35d58f.chunk.js",
+    "index.html": "/student-loan-calculator/index.html",
+    "main.63c525c9.css.map": "/student-loan-calculator/static/css/main.63c525c9.css.map",
+    "main.9509b232.js.map": "/student-loan-calculator/static/js/main.9509b232.js.map",
+    "787.0a35d58f.chunk.js.map": "/student-loan-calculator/static/js/787.0a35d58f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.63c525c9.css",
+    "static/js/main.9509b232.js"
+  ]
+}
