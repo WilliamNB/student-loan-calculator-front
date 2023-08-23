@@ -1,7 +1,9 @@
 import React from 'react'
-import { LineChart, Line, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const Repayements = ({results}) => {
+  //console.log("results" + results);
+
     return (
         <ResponsiveContainer width={700} height={300}>
         <BarChart
