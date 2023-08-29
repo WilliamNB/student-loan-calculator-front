@@ -32,11 +32,11 @@ const ResultTable = ({results}) => {
                 resultsObject.map((currentElement => (
                     <tr key={currentElement.id}>
                     <th>{currentElement.yearNumber}</th>
-                    <th>{currentElement["salary"].toFixed(2)}</th>
-                    <td>{currentElement["remainingBalance"].toFixed(2)}</td>
-                    <td>{currentElement["paidThisYearSalary"].toFixed(2)}</td>
-                    <td>{currentElement["paidThisYearTotal"].toFixed(2)}</td>
-                    <td>{currentElement["totalPaid"].toFixed(2)}</td>
+                    <th>{currentElement["salary"]}</th>
+                    <td>{currentElement["remainingBalance"]}</td>
+                    <td>{currentElement["paidThisYearSalary"]}</td>
+                    <td>{currentElement["paidThisYearTotal"]}</td>
+                    <td>{currentElement["totalPaid"]}</td>
                     </tr>
                 )))
             }

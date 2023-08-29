@@ -29,67 +29,40 @@ function App() {
   const onSubmit = methods.handleSubmit(data => {
     setLoading(true);
     console.log(data);
-    // const inputs = {
-    //   salary : data["Input Current Salary"],
-    //   balance : data["Input Loan Balance"],
-    //   loan : data["Input Loan Balance"],
-    //   additionalPayments : data["Additional Yearly Contributions"],
-    //   salaryIncrease : data["Yearly Salary Increase"],
+    console.log(Object.values(data));
+    let tempAdditionalPayments;
+    let tempSalaryIncrease;
+    if(data["Additional Yearly Contributions"] === ""){
+      tempAdditionalPayments = 0;
+    }else{
+      tempAdditionalPayments = parseInt(data["Additional Yearly Contributions"]);
+    }
+    if(data["Yearly Salary Increase"] === ""){
+      tempSalaryIncrease = 0
+    }else{
+      tempSalaryIncrease = parseInt(data["Yearly Salary Increase"]);
+    }
+    const inputs = {
+      salary : parseInt(data["Input Current Salary"]),
+      balance : parseInt(data["Input Loan Balance"]),
+      loan : parseInt(data["Input Loan Balance"]),
+      additionalPayments : tempAdditionalPayments,
+      salaryIncrease : tempSalaryIncrease,
+      futureSalaries : Object.values(data).slice(5)
+    } 
 
+    console.log(inputs.futureSalaries);
+
+    // if(inputs.salaryIncrease === ""){
+    //   inputs.salaryIncrease = 0;
     // }
-    //generateResults(inputs.salary, inputs.balance, LoanType.ONE, inputs.additionalPayments, inputs.salaryIncrease);
-    generateResults(50000, 38000, LoanType.ONE, 2000, 5);
+    // if(inputs.additionalPayments === ""){
+    //   inputs.additionalPayments = 0;
+    // }
+
+    generateResults(inputs.salary, inputs.balance, LoanType.ONE, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
+    //generateResults(50000, 38000, LoanType.ONE, 2000, 5);
   })
-
-  // const generateURL = (data) =>{
-  //   let url = "/api/v1";
-
-  //   let counter = 0;
-
-  //   for (let key in data) {
-  //     if (data.hasOwnProperty(key)) {
-  //       const value = data[key];
-  //       if(value != ''){
-  //         if(counter > 5){
-  //           console.log(`${key}: ${value}`);
-  //           url += `-${value}`;
-  //         }else{
-  //           console.log(`${key}: ${value}`);
-  //           url += `/${value}`;
-  //         }
-  //       }else{
-  //         console.log(`${key}: ${value}`);
-  //         url += `/0`;
-  //       }
-  //       counter++
-  //     }
-  //   }
-  //   console.log(url);
-  //   callApi(url);
-  // }
-
-  // const callApi = async (url) => {
-  //   try{
-  //     console.log("url:" + url)
-  //     const response = await api.get(url);
-  //     console.log(response)
-  //     response.data.forEach((currentElement) => { console.log(currentElement)})
-  //     setApiResult(response.data);
-  //     setLoading(null);
-  //   }catch(error){
-  //     console.log(error);
-  //     setError(error)
-  //   }
-  // }
-
-  // let loan = new Loan(LoanType.ONE);
-  // console.log("lOAN  " + loan.paymentPercentage);
-
-  // let person = new Person(50000, 37000, 5, 2000, loan) ;
-  // console.log("Person: " + person.salary);
-
-  // let result = new Result(1, 28000, 33000, 2000, 33000, 5)
-  // console.log("Result: " + result.totalPaid);
 
   function calucalteInterestPaid(paidSalary, paidAdditional,interest ){
     let interestPaid;
@@ -104,31 +77,36 @@ function App() {
   
   }
 
-  function generateResults(salary, startBalance, loanType, additionalPayments, salaryIncrease){
+  function generateResults(salary, startBalance, loanType, additionalPayments, salaryIncrease, futureSalaries){
     //add future salary back in as a parameter
     let results = [];
 
     let person = new Person(salary, startBalance, salaryIncrease, additionalPayments, loanType);
     let loan = person.loan;
 
-    // if(futureSalary != ""){
-    //     String[] futureSalaries = futureSalary.split("-");
+    console.log(futureSalaries);
 
-    //     for(int i = 0; i < futureSalaries.length; i = i+2){
-    //         person.setFutureSalaries(Integer.parseInt(futureSalaries[i]), Integer.parseInt(futureSalaries[i+1]));
-    //     }
-    // }
+    if(futureSalaries != null){
+        for(let i = 0; i < futureSalaries.length; i = i+2){
+          person.setFutureSalaries(futureSalaries[i], futureSalaries[i+1]);
+        }
+    }
 
     let balance = person.startBalance;
     let years = 0;
-    //ArrayList<Result> results = new ArrayList<Result>();
-
     let year = new Date().getFullYear();
 
     while (balance > 0){
         if(years >= loan.writeOffYear){
             break;
         }else{
+            if(years === 0){
+              let initialResult = new Result(year, balance, 0, 0, person.salary, 0);
+              results.push(initialResult);
+            }
+            person.increaseSalary();
+            person.checkFutureSalaries(year); 
+            
             let currentSalary = person.salary;
             let paidSalary = ((currentSalary - loan.repayThreshold) * loan.paymentPercentage);
             let paidAdditional = person.additionalPayments;
@@ -148,8 +126,6 @@ function App() {
             results.push(result);
 
             balance += (interest);
-            person.increaseSalary();
-            //person.checkFutureSalaries(year);
             //console.log("Salary: " + person.salary + ", year: " + year);
         }
     }

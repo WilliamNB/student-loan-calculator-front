@@ -11,15 +11,17 @@ export class Person{
     }
 
     increaseSalary(){
-        this.salary +=(this.salary * this.yearlySalaryIncrease)
+        this.salary = parseInt(this.salary + (this.salary * this.yearlySalaryIncrease));
     }
     
     setFutureSalaries(year, value){
-        this.futureSalaries.set(year, value)
+        this.futureSalaries.set(year, value);
     }
 
     checkFutureSalaries(year){
-
+        if(this.futureSalaries.has(year)){
+            this.salary = this.futureSalaries.get(year);
+        }
     }
 
 }
