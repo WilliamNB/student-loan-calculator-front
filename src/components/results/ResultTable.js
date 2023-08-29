@@ -2,19 +2,6 @@ import React from 'react'
 
 const ResultTable = ({results}) => {
 
-    const resultsObject = results.map((result, i) => ({
-        id: i,
-        yearNumber: result.yearNumber,
-        remainingBalance: result.remainingBalance,
-        paidThisYearSalary: result.paidThisYearSalary,
-        paidThisYearAdditional: result.paidThisYearAdditional,
-        paidThisYearTotal: result.paidThisYearTotal,
-        paidThisYearInterest: result.paidThisYearInterest,
-        totalPaid: result.totalPaid,
-        totalPaidInterest: result.paidInterestTotal,
-        salary: result.salary
-    }));
-
   return (
     <table className="table">
         <thead>
@@ -29,14 +16,14 @@ const ResultTable = ({results}) => {
         </thead>
         <tbody>
             {
-                resultsObject.map((currentElement => (
+                results.map((currentElement => (
                     <tr key={currentElement.id}>
                     <th>{currentElement.yearNumber}</th>
-                    <th>{currentElement["salary"]}</th>
-                    <td>{currentElement["remainingBalance"]}</td>
-                    <td>{currentElement["paidThisYearSalary"]}</td>
-                    <td>{currentElement["paidThisYearTotal"]}</td>
-                    <td>{currentElement["totalPaid"]}</td>
+                    <td>£{Math.round(currentElement.salary)}</td>
+                    <td>£{Math.round(currentElement.remainingBalance)}</td>
+                    <td>£{Math.round(currentElement.paidThisYearSalary)}</td>
+                    <td>£{Math.round(currentElement.paidThisYearTotal)}</td>
+                    <td>£{Math.round(currentElement.totalPaid)}</td>
                     </tr>
                 )))
             }

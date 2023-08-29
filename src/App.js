@@ -119,10 +119,10 @@ function App() {
             year ++;
 
             let result = new Result(year, balance, paidSalary, paidAdditional, currentSalary, interestPaid);
-            // if (results !== null){
-            //     result.updateTotalPaid(results[years - 2].totalPaid);
-            //     result.updateTotalInterestPaid(results[years - 2].paidInterestTotal);
-            // }
+            if (results !== null){
+                result.updateTotalPaid(results[years - 1].totalPaid);
+                result.updateTotalPaidInterest(results[years - 1].paidInterestTotal);
+            }
             results.push(result);
 
             balance += (interest);
