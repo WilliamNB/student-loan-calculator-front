@@ -5,7 +5,6 @@ import 'react-bootstrap';
 
 import React, { useState} from "react";
 import { FormProvider, useForm } from 'react-hook-form';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,19 +26,10 @@ function App() {
   const onSubmit = methods.handleSubmit(data => {
     console.log(data);
     console.log(Object.values(data));
+
     //temp js solution to inital num from string inputs
-    let tempAdditionalPayments;
-    let tempSalaryIncrease;
-    if(data["Additional Yearly Contributions"] === ""){
-      tempAdditionalPayments = 0;
-    }else{
-      tempAdditionalPayments = parseInt(data["Additional Yearly Contributions"]);
-    }
-    if(data["Yearly Salary Increase"] === ""){
-      tempSalaryIncrease = 0
-    }else{
-      tempSalaryIncrease = parseInt(data["Yearly Salary Increase"]);
-    }
+    const tempAdditionalPayments = data["Additional Yearly Contributions"] === "" ? 0 : parseInt(data["Additional Yearly Contributions"]);
+    const tempSalaryIncrease = data["Yearly Salary Increase"] === "" ? 0 : parseInt(data["Yearly Salary Increase"]);
 
     const inputs = {
       salary : parseInt(data["Input Current Salary"]),
@@ -54,21 +44,14 @@ function App() {
     console.log(inputs.futureSalaries);
     generateResults(inputs.salary, inputs.balance, inputs.loanType, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
   })
-
-  function calucalteInterestPaid(paidSalary, paidAdditional,interest ){
-    let interestPaid;
-
-    if((paidSalary + paidAdditional) > interest){
-        interestPaid = interest;
-    }else{
-        interestPaid = interest - paidSalary + paidAdditional;
-    }
-
-    return interestPaid;
-  
+ 
+  //arrow function
+  const calucalteInterestPaid = (paidSalary, paidAdditional, interest) => {
+    const totalPaid = paidSalary + paidAdditional;
+    return totalPaid > interest ? interest : totalPaid;
   }
-
-  function generateResults(salary, startBalance, loanType, additionalPayments, salaryIncrease, futureSalaries){
+  //function expression
+  const generateResults = function(salary, startBalance, loanType, additionalPayments, salaryIncrease, futureSalaries){
     const results = [];
 
     const person = new Person(salary, startBalance, salaryIncrease, additionalPayments, loanType);
@@ -122,7 +105,6 @@ function App() {
             }
         }
     }
-
 
     results.forEach((i) => {
         console.log("Balance:", i.remainingBalance, "Years:", i.yearNumber, "Salary:", i.salary, "Payed this year total:", i.paidThisYearTotal, "Payed this year salary:", i.paidThisYearSalary, "Payed in total:", i.totalPaid, "Payed interest this year:", i.paidInterestTotal); 
