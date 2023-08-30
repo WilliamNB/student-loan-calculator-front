@@ -24,7 +24,7 @@ export class Loan{
                 this.repayThreshold = 27660;
                 this.writeOffYear = 30;
                 break;
-            case LoanType.Five:
+            case LoanType.FIVE:
                 this.loanType = loanType;
                 this.interestRate = 0.1;
                 this.paymentPercentage = 0.09;

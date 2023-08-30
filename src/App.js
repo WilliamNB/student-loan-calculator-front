@@ -2,27 +2,28 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap/dist/js/bootstrap.min.js";
 import 'react-bootstrap';
-//import api from './api/axiosConfig';
-import FutureSalary from './components/futureSalary/FutureSalary';
-import CurrencyInput from './components/inputs/CurrencyInput';
-import LoanDropdown from './components/dropdowns/LoanDropdown';
-import ResultTable from './components/results/ResultTable';
+
 import React, { useState} from "react";
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+
+import FutureSalary from './components/futureSalary/FutureSalary';
+import CurrencyInput from './components/inputs/CurrencyInput';
+import LoanDropdown from './components/dropdowns/LoanDropdown';
+import ResultTable from './components/results/ResultTable';
 import Repayements from './components/graphs/Repayements';
 
 import { Person } from './javascript/Person';
 import { Result } from './javascript/Result';
 import { LoanType } from './javascript/LoanType';
+import ResultsOverview from './components/results/ResultsOverview';
 
 function App() {
 
   const methods = useForm();
-
-  const [apiResult, setApiResult] = useState(["test1"]);
+  const [apiResult, setApiResult] = useState();
 
   const onSubmit = methods.handleSubmit(data => {
     console.log(data);
@@ -45,14 +46,14 @@ function App() {
       salary : parseInt(data["Input Current Salary"]),
       balance : parseInt(data["Input Loan Balance"]),
       loan : parseInt(data["Input Loan Balance"]),
+      loanType : data["Loan Type"],
       additionalPayments : tempAdditionalPayments,
       salaryIncrease : tempSalaryIncrease,
       futureSalaries : Object.values(data).slice(5)
     } 
 
     console.log(inputs.futureSalaries);
-
-    generateResults(inputs.salary, inputs.balance, LoanType.ONE, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
+    generateResults(inputs.salary, inputs.balance, inputs.loanType, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
   })
 
   function calucalteInterestPaid(paidSalary, paidAdditional,interest ){
@@ -69,13 +70,10 @@ function App() {
   }
 
   function generateResults(salary, startBalance, loanType, additionalPayments, salaryIncrease, futureSalaries){
-    //add future salary back in as a parameter
-    let results = [];
+    const results = [];
 
-    let person = new Person(salary, startBalance, salaryIncrease, additionalPayments, loanType);
-    let loan = person.loan;
-
-    console.log(futureSalaries);
+    const person = new Person(salary, startBalance, salaryIncrease, additionalPayments, loanType);
+    const loan = person.loan;
 
     if(futureSalaries != null){
         for(let i = 0; i < futureSalaries.length; i = i+2){
@@ -109,25 +107,30 @@ function App() {
             years ++;
             year ++;
 
-            let result = new Result(year, balance, paidSalary, paidAdditional, currentSalary, interestPaid);
-            if (results !== null){
-                result.updateTotalPaid(results[years - 1].totalPaid);
-                result.updateTotalPaidInterest(results[years - 1].paidInterestTotal);
+            let result = new Result();
+            if(balance < 0){
+              result = new Result(year, 0, paidSalary + balance, paidAdditional, currentSalary, interestPaid); 
+            }else{
+              result = new Result(year, balance, paidSalary, paidAdditional, currentSalary, interestPaid);
             }
+            result.updateTotalPaid(results[years - 1].totalPaid);
+            result.updateTotalPaidInterest(results[years - 1].paidInterestTotal);
+
             results.push(result);
 
-            balance += (interest);
+            if(balance > 0){
+              balance += (interest);
+            }
         }
     }
 
 
     results.forEach((i) => {
-        console.log("Balance: " + i.remainingBalance + ", Years: " + i.yearNumber + ", Salary: " + i.salary + ", Payed this year total: " + i.paidThisYearTotal + ", Payed this year salary: " + i.paidThisYearSalary + ", Payed in total: " + i.totalPaid  + ", Payed interest this year: " + i.paidInterestTotal); 
+        console.log("Balance:", i.remainingBalance, "Years:", i.yearNumber, "Salary:", i.salary, "Payed this year total:", i.paidThisYearTotal, "Payed this year salary:", i.paidThisYearSalary, "Payed in total:", i.totalPaid, "Payed interest this year:", i.paidInterestTotal); 
     });
 
     console.log(results);
-
-    console.log("It will take you " + years + " to repay your student loan");
+    console.log("It will take you", years ,"to repay your student loan");
 
     setApiResult(results)
   }
@@ -141,7 +144,7 @@ function App() {
         <main>
         <FormProvider {...methods}>
           <form onSubmit={e => e.preventDefault()} noValidate>
-          <div className="card card-body">
+          <div className="card card-body test1">
 
             <CurrencyInput placeholderText={"Input Current Salary"} symbol={"£"} required={true} />
 
@@ -172,20 +175,29 @@ function App() {
           </form>
           </FormProvider>
 
+          {apiResult != null &&
           <section>
             <div className="card card-body">
-              {apiResult != null &&
                 <ResultTable results={apiResult}/>
-              }
             </div>
           </section>
+          }
 
+          {apiResult != null &&
+          <section>
+            <div className="card card-body">
+                <ResultsOverview results={apiResult} />
+            </div>
+          </section>
+          }
+
+          {apiResult != null &&   
           <section>
             <div className="card card-body">
                 <Repayements results={apiResult} />
             </div>
           </section>
-
+          }
         </main>
       </header>
     </div>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import './FutureSalary.css';
 import FutureSalaryInputs from './FutureSalaryInputs';
 
 const FutureSalary = () => {
@@ -20,7 +19,7 @@ const FutureSalary = () => {
 
   return (
     <div>
-        <div className="row input-group mb-3 future-salary">
+        <div className="row input-group mb-3 overview">
             <p className='col-9'> Add future Salary </p>
             <span className='col future-salary-button' onClick={handleButtonClick}>
             <FontAwesomeIcon className="fa-plus" icon = {faPlus} />

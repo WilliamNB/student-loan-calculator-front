@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  align-items: center;
 }
 
 
@@ -13,7 +14,12 @@
   align-items: center;
   justify-content: center;
   font-size: 20;
-  color: grey;
+  color: #2596be;
+}
+
+.test1{
+  width: 1000px;
+  max-width: 1000px;
 }
 
 .App-link {
@@ -28,6 +34,23 @@
   padding-top: 5%;
   padding-bottom: 3%;
   color: #2596be;
+  font-weight: bold;
+}
+
+.overview{
+  font-weight: bold;
+  color: #2596be;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.fa-plus{
+  float:right;
+  align-items: center;
+}
+
+.test{
+  align-items: center;
 }
 
 
