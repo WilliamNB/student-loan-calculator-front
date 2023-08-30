@@ -28,13 +28,13 @@ function App() {
     console.log(Object.values(data));
 
     //temp js solution to inital num from string inputs
-    const tempAdditionalPayments = data["Additional Yearly Contributions"] === "" ? 0 : parseInt(data["Additional Yearly Contributions"]);
-    const tempSalaryIncrease = data["Yearly Salary Increase"] === "" ? 0 : parseInt(data["Yearly Salary Increase"]);
+    const tempAdditionalPayments = data["Additional Yearly Contributions"] === "" ? 0 : Number(data["Additional Yearly Contributions"]);
+    const tempSalaryIncrease = data["Yearly Salary Increase"] === "" ? 0 : Number(data["Yearly Salary Increase"]);
 
     const inputs = {
-      salary : parseInt(data["Input Current Salary"]),
-      balance : parseInt(data["Input Loan Balance"]),
-      loan : parseInt(data["Input Loan Balance"]),
+      salary : Number(data["Input Current Salary"]),
+      balance : Number(data["Input Loan Balance"]),
+      loan : Number(data["Input Loan Balance"]),
       loanType : data["Loan Type"],
       additionalPayments : tempAdditionalPayments,
       salaryIncrease : tempSalaryIncrease,
@@ -59,7 +59,7 @@ function App() {
 
     if(futureSalaries != null){
         for(let i = 0; i < futureSalaries.length; i = i+2){
-          person.setFutureSalaries(futureSalaries[i], parseInt(futureSalaries[i+1]));
+          person.setFutureSalaries(futureSalaries[i], Number(futureSalaries[i+1]));
         }
     }
 
