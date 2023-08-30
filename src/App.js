@@ -14,11 +14,10 @@ import CurrencyInput from './components/inputs/CurrencyInput';
 import LoanDropdown from './components/dropdowns/LoanDropdown';
 import ResultTable from './components/results/ResultTable';
 import Repayements from './components/graphs/Repayements';
+import ResultsOverview from './components/results/ResultsOverview';
 
 import { Person } from './javascript/Person';
 import { Result } from './javascript/Result';
-import { LoanType } from './javascript/LoanType';
-import ResultsOverview from './components/results/ResultsOverview';
 
 function App() {
 
@@ -141,63 +140,84 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <main>
-        <FormProvider {...methods}>
-          <form onSubmit={e => e.preventDefault()} noValidate>
-          <div className="card card-body test1">
-
-            <CurrencyInput placeholderText={"Input Current Salary"} symbol={"£"} required={true} />
-
-            <CurrencyInput placeholderText={"Input Loan Balance"}symbol={"£"} required={true} />
-
-            <LoanDropdown />
-
-            <div className='row additional-settings'>
-              <p className='col-9'>Additional Parameters</p>
-              <FontAwesomeIcon className="col fa-plus" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
-            </div>
-
-            <div className="collapse" id="collapseExample">
-              <div className="card card-body">
-
-                <CurrencyInput placeholderText={"Additional Yearly Contributions"}symbol={"£"} required={false} />
-
-                <CurrencyInput placeholderText={"Yearly Salary Increase"}symbol={"%"} required={false} />
-
-                <FutureSalary />
-
-              </div> 
-            </div>
-
-            <input className="btn btn-primary" type="submit" value="Submit" onClick={onSubmit}></input>
-
+        <main className="margin-top">
+        <section className='card'>
+          <div className="row section-title">
+            <div className='col'>Student Loan Calc</div>
+            <FontAwesomeIcon className="col" data-bs-toggle="collapse" data-bs-target="#input-form" aria-expanded="false" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
           </div>
-          </form>
-          </FormProvider>
+          <div id="input-form">
+            <FormProvider {...methods}>
+              <form onSubmit={e => e.preventDefault()} noValidate>
+              <div className="card card-body input-form">
 
-          {apiResult != null &&
-          <section>
-            <div className="card card-body">
-                <ResultTable results={apiResult}/>
-            </div>
-          </section>
-          }
+                <CurrencyInput placeholderText={"Input Current Salary"} symbol={"£"} required={true} />
 
-          {apiResult != null &&
-          <section>
-            <div className="card card-body">
-                <ResultsOverview results={apiResult} />
-            </div>
-          </section>
-          }
+                <CurrencyInput placeholderText={"Input Loan Balance"}symbol={"£"} required={true} />
 
-          {apiResult != null &&   
-          <section>
-            <div className="card card-body">
-                <Repayements results={apiResult} />
-            </div>
-          </section>
-          }
+                <LoanDropdown />
+
+                <div className='row additional-settings'>
+                  <p className='col-9'>Additional Parameters</p>
+                  <FontAwesomeIcon className="col fa-plus" data-bs-toggle="collapse" data-bs-target="#addition-settings" aria-expanded="false" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
+                </div>
+
+                <div className="collapse" id="addition-settings">
+                  <div className="card card-body">
+
+                    <CurrencyInput placeholderText={"Additional Yearly Contributions"}symbol={"£"} required={false} />
+
+                    <CurrencyInput placeholderText={"Yearly Salary Increase"}symbol={"%"} required={false} />
+
+                    <FutureSalary />
+
+                  </div> 
+                </div>
+
+                <input className="btn btn-primary" type="submit" value="Submit" onClick={onSubmit}></input>
+
+              </div>
+              </form>
+            </FormProvider>
+          </div>
+        </section>
+
+        {apiResult != null &&
+        <section className='card'>
+          <div className="row section-title">
+            <div className='col'>Results Table</div>
+            <FontAwesomeIcon className="col" data-bs-toggle="collapse" data-bs-target="#results-table" aria-expanded="false" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
+          </div>
+          <div className="card-body" id="results-table">
+              <ResultTable results={apiResult}/>
+          </div>
+        </section>
+        }
+
+        {apiResult != null &&
+        <section className='card'>
+          <div className="row section-title">
+            <div className='col'>Results Overview</div>
+            <FontAwesomeIcon className="col" data-bs-toggle="collapse" data-bs-target="#results-overview" aria-expanded="false" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
+          </div>
+          <div className="card-body" id="results-overview">
+              <ResultsOverview results={apiResult} />
+          </div>
+        </section>
+        }
+
+        {apiResult != null &&   
+        <section className='card margin-bottom'>
+          <div className="row section-title">
+            <div className='col'>Results Graph</div>
+            <FontAwesomeIcon className="col" data-bs-toggle="collapse" data-bs-target="#results-graph" aria-expanded="false" onClick={() => setIcon(icon ? false : true)} icon={icon ? faCaretDown : faCaretUp} />
+          </div>
+          <div className="card-body margin-bottom" id="results-graph">
+              <Repayements results={apiResult} />
+          </div>
+        </section>
+        }
+
         </main>
       </header>
     </div>
