@@ -71,38 +71,43 @@ function App() {
         if(years >= loan.writeOffYear){
             break;
         }else{
-            if(years === 0){
-              let initialResult = new Result(year, balance, 0, 0, person.salary, 0);
-              results.push(initialResult);
-            }
-            person.increaseSalary();
-            person.checkFutureSalaries(year); 
-            
             let currentSalary = person.salary;
             let paidSalary = ((currentSalary - loan.repayThreshold) * loan.paymentPercentage);
             let paidAdditional = person.additionalPayments;
             let interest = balance * loan.interestRate;
-
             let interestPaid = calucalteInterestPaid(paidSalary, paidAdditional, interest);
 
-            balance -= (paidSalary + paidAdditional);
-            years ++;
-            year ++;
-
             let result = new Result();
-            if(balance < 0){
-              result = new Result(year, 0, paidSalary + balance, paidAdditional, currentSalary, interestPaid); 
+            if(balance < (paidSalary + paidAdditional)){
+              if(balance < paidSalary){
+                result = new Result(year, 0, balance, 0, currentSalary, interestPaid);
+              }else{
+                result = new Result(year, 0, paidSalary, balance - paidSalary, currentSalary, interestPaid);
+              }
+              balance = 0;
             }else{
+              //balance yearly interest is added before the amount paid for the year is subtracted
+              balance -= ((paidSalary + paidAdditional) - interest);
               result = new Result(year, balance, paidSalary, paidAdditional, currentSalary, interestPaid);
             }
-            result.updateTotalPaid(results[years - 1].totalPaid);
-            result.updateTotalPaidInterest(results[years - 1].paidInterestTotal);
+
+            //this shouldn't be run in the first loop
+            if(years !== 0){
+              result.updateTotalPaid(results[years-1].totalPaid);
+              result.updateTotalPaidInterest(results[years-1].paidInterestTotal);
+            }
 
             results.push(result);
 
-            if(balance > 0){
-              balance += (interest);
-            }
+            years ++;
+            year ++;
+
+            person.increaseSalary();
+            person.checkFutureSalaries(year); 
+
+            // if(balance > 0){
+            //   balance += (interest);
+            // }
         }
     }
 
