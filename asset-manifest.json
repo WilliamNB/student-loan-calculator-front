@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/student-loan-calculator-front/static/css/main.63c525c9.css",
-    "main.js": "/student-loan-calculator-front/static/js/main.bab1ae30.js",
+    "main.css": "/student-loan-calculator-front/static/css/main.89f3b3b5.css",
+    "main.js": "/student-loan-calculator-front/static/js/main.41c692d8.js",
     "static/js/787.0a35d58f.chunk.js": "/student-loan-calculator-front/static/js/787.0a35d58f.chunk.js",
     "index.html": "/student-loan-calculator-front/index.html",
-    "main.63c525c9.css.map": "/student-loan-calculator-front/static/css/main.63c525c9.css.map",
-    "main.bab1ae30.js.map": "/student-loan-calculator-front/static/js/main.bab1ae30.js.map",
+    "main.89f3b3b5.css.map": "/student-loan-calculator-front/static/css/main.89f3b3b5.css.map",
+    "main.41c692d8.js.map": "/student-loan-calculator-front/static/js/main.41c692d8.js.map",
     "787.0a35d58f.chunk.js.map": "/student-loan-calculator-front/static/js/787.0a35d58f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.63c525c9.css",
-    "static/js/main.bab1ae30.js"
+    "static/css/main.89f3b3b5.css",
+    "static/js/main.41c692d8.js"
   ]
 }
