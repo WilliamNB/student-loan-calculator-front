@@ -17,6 +17,7 @@ import ResultsOverview from './components/results/ResultsOverview';
 
 import { Person } from './javascript/Person';
 import { Result } from './javascript/Result';
+import YearDropdown from './components/dropdowns/YearDropdown';
 
 function App() {
 
@@ -36,13 +37,14 @@ function App() {
       balance : Number(data["Input Loan Balance"]),
       loan : Number(data["Input Loan Balance"]),
       loanType : data["Loan Type"],
+      graduationYear : Math.abs(Number(data["Graduation Year"])),
       additionalPayments : tempAdditionalPayments,
       salaryIncrease : tempSalaryIncrease,
       futureSalaries : Object.values(data).slice(5)
     } 
 
     console.log(inputs.futureSalaries);
-    generateResults(inputs.salary, inputs.balance, inputs.loanType, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
+    generateResults(inputs.salary, inputs.balance, inputs.loanType, inputs.graduationYear, inputs.additionalPayments, inputs.salaryIncrease, inputs.futureSalaries);
   })
  
   //arrow function
@@ -51,7 +53,7 @@ function App() {
     return totalPaid > interest ? interest : totalPaid;
   }
   //function expression
-  const generateResults = function(salary, startBalance, loanType, additionalPayments, salaryIncrease, futureSalaries){
+  const generateResults = function(salary, startBalance, loanType, graduationYear, additionalPayments, salaryIncrease, futureSalaries){
     const results = [];
 
     const person = new Person(salary, startBalance, salaryIncrease, additionalPayments, loanType);
@@ -68,7 +70,7 @@ function App() {
     let year = new Date().getFullYear();
 
     while (balance > 0){
-        if(years >= loan.writeOffYear){
+        if(years >= (loan.writeOffYear - (new Date().getFullYear() - graduationYear))){
             break;
         }else{
             let currentSalary = person.salary;
@@ -105,9 +107,6 @@ function App() {
             person.increaseSalary();
             person.checkFutureSalaries(year); 
 
-            // if(balance > 0){
-            //   balance += (interest);
-            // }
         }
     }
 
@@ -143,6 +142,8 @@ function App() {
                 <CurrencyInput placeholderText={"Input Loan Balance"}symbol={"£"} required={true} />
 
                 <LoanDropdown />
+
+                <YearDropdown />
 
                 <div className='row additional-settings'>
                   <p className='col-9'>Additional Parameters</p>

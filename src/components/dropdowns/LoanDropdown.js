@@ -6,7 +6,7 @@ const LoanDropdown = () => {
   const { register } = useFormContext()
 
   return (
-    <div>
+    <div className="input-group mb-3">
     <select className="form-select" aria-label="Default select example"
       {...register("Loan Type", {
         required: {
